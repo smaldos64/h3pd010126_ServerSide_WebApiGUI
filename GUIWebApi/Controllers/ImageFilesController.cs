@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using GUIWebApi.Tools;
 
 namespace GUIWebAPI.Controllers
 {
@@ -103,13 +104,14 @@ namespace GUIWebAPI.Controllers
             if (files == null || files.Count == 0)
                 return BadRequest(new { message = "No files received." });
 
-            string imagesRoot = GetImagesRoot();
+            //string imagesRoot = GetImagesRoot();
+            string imagesRoot = ImageTools.GetImagesRoot(env);
             Directory.CreateDirectory(imagesRoot);
 
-            HashSet<string> allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".jfif"
-            };
+            //HashSet<string> allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            //{
+            //    ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".jfif"
+            //};
 
             List<ImageFileReadDto> uploaded = new List<ImageFileReadDto>();
 
@@ -119,7 +121,7 @@ namespace GUIWebAPI.Controllers
                     return BadRequest(new { message = "One or more files are empty." });
 
                 string extension = Path.GetExtension(file.FileName);
-                if (!allowedExtensions.Contains(extension))
+                if (!ImageTools.allowedExtensions.Contains(extension))
                     return BadRequest(new { message = $"File type not allowed: {extension}" });
 
                 string safeName = SanitizeFileName(Path.GetFileName(file.FileName));
@@ -187,28 +189,10 @@ namespace GUIWebAPI.Controllers
             if (imageFile.Products != null && imageFile.Products.Any())
             {
                 int productCount = imageFile.Products.Count;
-                //return BadRequest(new
-                //{
-                //    products = imageFile.Products.Select(p => p.Name).ToList(), // Valgfrit: send navne på produkterne med
-                //    message = $"Billedet kan ikke slettes, da det bruges af {productCount} produkt(er). ProduktNavnene er : {imageFile.Products.Select(p => p.Name).ToList().ToString()}",
-                //    //products = imageFile.Products.Select(p => p.Name).ToList() // Valgfrit: send navne på produkterne med
-                //});
-
-                // Ved at gøre dette, opstår 'errorData' som en variabel i 'Locals' vinduet
-                //var errorData = new
-                //{
-                //    message = $"Billedet kan ikke slettes, da det bruges af {productCount} produkt(er).",
-                //    products = imageFile.Products.Select(p => p.Name).ToList()
-                //};
-
-                //// Sæt breakpoint her. Tryk F10 (Step Over). 
-                //// Nu kan du folde 'errorData' ud i Locals-vinduet og se alt indholdet.
-                //return BadRequest(errorData);
-
+                
                 string errorString = $"Billedet kan ikke slettes, da det bruges af {productCount} produkt(er) ";
                 errorString += "\nMed disse Produkt Id'er og Produktnavne: \n";
                 errorString += string.Join("\n", imageFile.Products.Select(p => $"- [ProductId: {p.ProductId}] {p.Name} "));
-                //errorString += string.Join(", ", imageFile.Products.Select(p => p.Name));
                 return BadRequest(errorString);
             }
 

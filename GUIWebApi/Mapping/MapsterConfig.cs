@@ -1,5 +1,6 @@
 ﻿using GUIWebApi.Models;
 using GUIWebApi.Models.DTOs;
+using GUIWebApi.Tools;
 using Mapster;
 using System.Reflection;
 
@@ -30,6 +31,9 @@ namespace GUIWebAPI.Mapping
             config.NewConfig<Category, CategoryReadDto>()
                 .Map(d => d.CategoryId, s => s.CategoryId)
                 .Map(d => d.Name, s => s.Name);
+
+            config.NewConfig<InventoryFile, InventoryFileReadDto>()
+                .Map(d => d.Url, s => s.ContentHash.MakeUrl());
         }
 
         public static void RegisterGlobal()

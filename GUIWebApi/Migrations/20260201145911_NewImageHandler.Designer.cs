@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GUIWebApi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260201113818_NewImageHandler")]
+    [Migration("20260201145911_NewImageHandler")]
     partial class NewImageHandler
     {
         /// <inheritdoc />
@@ -53,33 +53,12 @@ namespace GUIWebApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Category1Id");
 
-                    b.ToTable("Category1");
-                });
-
-            modelBuilder.Entity("GUIWebApi.Models.FileInventory", b =>
-                {
-                    b.Property<int>("FileInventoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileInventoryId"));
-
-                    b.Property<string>("ContentHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PhysicalPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("FileInventoryId");
-
-                    b.ToTable("FileInventories");
+                    b.ToTable("Categories1");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.ImageFile", b =>
@@ -106,6 +85,28 @@ namespace GUIWebApi.Migrations
                         .IsUnique();
 
                     b.ToTable("ImageFiles");
+                });
+
+            modelBuilder.Entity("GUIWebApi.Models.InventoryFile", b =>
+                {
+                    b.Property<int>("InventoryFileId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InventoryFileId"));
+
+                    b.Property<string>("ContentHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PhysicalPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("InventoryFileId");
+
+                    b.ToTable("InventoryFiles");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.Product", b =>
@@ -189,7 +190,7 @@ namespace GUIWebApi.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FileInventoryId")
+                    b.Property<int>("InventoryFileId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UploadDate")
@@ -197,7 +198,7 @@ namespace GUIWebApi.Migrations
 
                     b.HasKey("UserFileId");
 
-                    b.HasIndex("FileInventoryId");
+                    b.HasIndex("InventoryFileId");
 
                     b.ToTable("UserFiles");
                 });
@@ -240,9 +241,9 @@ namespace GUIWebApi.Migrations
 
             modelBuilder.Entity("GUIWebApi.Models.UserFile", b =>
                 {
-                    b.HasOne("GUIWebApi.Models.FileInventory", "Inventory")
+                    b.HasOne("GUIWebApi.Models.InventoryFile", "Inventory")
                         .WithMany("UserFiles")
-                        .HasForeignKey("FileInventoryId")
+                        .HasForeignKey("InventoryFileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -259,14 +260,14 @@ namespace GUIWebApi.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("GUIWebApi.Models.FileInventory", b =>
-                {
-                    b.Navigation("UserFiles");
-                });
-
             modelBuilder.Entity("GUIWebApi.Models.ImageFile", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GUIWebApi.Models.InventoryFile", b =>
+                {
+                    b.Navigation("UserFiles");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.UserFile", b =>

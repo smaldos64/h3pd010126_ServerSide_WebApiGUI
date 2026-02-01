@@ -13,7 +13,7 @@ namespace GUIWebApi.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Product1> Products1 { get; set; }
         public DbSet<ImageFile> ImageFiles { get; set; }
-        public DbSet<FileInventory> FileInventories { get; set; }
+        public DbSet<InventoryFile> InventoryFiles { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

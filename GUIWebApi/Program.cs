@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace GUIWebAPI
 {
@@ -54,6 +55,9 @@ namespace GUIWebAPI
             {
                 options.Limits.MaxRequestBodySize = 500_000_000;
             });
+
+            //builder.Services.AddControllers().AddJsonOptions(x =>
+            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             var app = builder.Build();
 

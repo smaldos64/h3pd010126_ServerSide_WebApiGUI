@@ -25,31 +25,16 @@ namespace GUIWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Category1",
+                name: "Categories1",
                 columns: table => new
                 {
                     Category1Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category1", x => x.Category1Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FileInventories",
-                columns: table => new
-                {
-                    FileInventoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ContentHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhysicalPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FileSize = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileInventories", x => x.FileInventoryId);
+                    table.PrimaryKey("PK_Categories1", x => x.Category1Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,24 +52,18 @@ namespace GUIWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserFiles",
+                name: "InventoryFiles",
                 columns: table => new
                 {
-                    UserFileId = table.Column<int>(type: "int", nullable: false)
+                    InventoryFileId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FileInventoryId = table.Column<int>(type: "int", nullable: false)
+                    ContentHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhysicalPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileSize = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserFiles", x => x.UserFileId);
-                    table.ForeignKey(
-                        name: "FK_UserFiles_FileInventories_FileInventoryId",
-                        column: x => x.FileInventoryId,
-                        principalTable: "FileInventories",
-                        principalColumn: "FileInventoryId",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_InventoryFiles", x => x.InventoryFileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,6 +96,27 @@ namespace GUIWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserFiles",
+                columns: table => new
+                {
+                    UserFileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InventoryFileId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserFiles", x => x.UserFileId);
+                    table.ForeignKey(
+                        name: "FK_UserFiles_InventoryFiles_InventoryFileId",
+                        column: x => x.InventoryFileId,
+                        principalTable: "InventoryFiles",
+                        principalColumn: "InventoryFileId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products1",
                 columns: table => new
                 {
@@ -132,9 +132,9 @@ namespace GUIWebApi.Migrations
                 {
                     table.PrimaryKey("PK_Products1", x => x.Product1Id);
                     table.ForeignKey(
-                        name: "FK_Products1_Category1_CategoryId",
+                        name: "FK_Products1_Categories1_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category1",
+                        principalTable: "Categories1",
                         principalColumn: "Category1Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -172,9 +172,9 @@ namespace GUIWebApi.Migrations
                 column: "ImageFileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFiles_FileInventoryId",
+                name: "IX_UserFiles_InventoryFileId",
                 table: "UserFiles",
-                column: "FileInventoryId");
+                column: "InventoryFileId");
         }
 
         /// <inheritdoc />
@@ -193,13 +193,13 @@ namespace GUIWebApi.Migrations
                 name: "ImageFiles");
 
             migrationBuilder.DropTable(
-                name: "Category1");
+                name: "Categories1");
 
             migrationBuilder.DropTable(
                 name: "UserFiles");
 
             migrationBuilder.DropTable(
-                name: "FileInventories");
+                name: "InventoryFiles");
         }
     }
 }
