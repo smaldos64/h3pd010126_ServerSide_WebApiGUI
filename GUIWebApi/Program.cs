@@ -1,5 +1,5 @@
 using GUIWebAPI.Mapping;
-using GUIWebAPI.Models;
+using GUIWebApi.Models;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Http.Features;

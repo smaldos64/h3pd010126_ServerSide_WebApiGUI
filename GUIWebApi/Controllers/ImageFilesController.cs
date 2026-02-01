@@ -1,8 +1,10 @@
-﻿using GUIWebAPI.Models;
-using GUIWebAPI.Models.DTOs;
+﻿using GUIWebApi.Models;
+using GUIWebApi.Models.DTOs;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GUIWebAPI.Controllers
@@ -50,7 +52,7 @@ namespace GUIWebAPI.Controllers
 
                 HashSet<string> allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
-                    ".jpg", ".jpeg", ".png", ".bmp"
+                    ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".jfif"
                 };
 
                 IEnumerable<string> filesOnDisk = Directory.EnumerateFiles(imagesRoot, "*.*", SearchOption.TopDirectoryOnly).Where(p => allowedExtensions.Contains(Path.GetExtension(p)));
@@ -106,7 +108,7 @@ namespace GUIWebAPI.Controllers
 
             HashSet<string> allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg"
+                ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".jfif"
             };
 
             List<ImageFileReadDto> uploaded = new List<ImageFileReadDto>();
@@ -281,6 +283,32 @@ namespace GUIWebAPI.Controllers
             string path = virtualOrRelativePath.StartsWith("/") ? virtualOrRelativePath : "/" + virtualOrRelativePath;
 
             return baseUrl + path;
+        }
+
+        private async Task<string> GetFastHashAsync(IFormFile file)
+        {
+            using (var stream = file.OpenReadStream())
+            {
+                // Vi læser kun de første 8192 bytes
+                byte[] buffer = new byte[8192];
+                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    // Start hashing med bufferen
+                    sha256.TransformBlock(buffer, 0, bytesRead, null, 0);
+
+                    // Tilføj filstørrelsen for at gøre hashen mere unik
+                    byte[] sizeBytes = BitConverter.GetBytes(file.Length);
+                    sha256.TransformBlock(sizeBytes, 0, sizeBytes.Length, null, 0);
+
+                    // Tilføj filnavnet
+                    byte[] nameBytes = Encoding.UTF8.GetBytes(file.FileName.ToLower());
+                    sha256.TransformFinalBlock(nameBytes, 0, nameBytes.Length);
+
+                    return BitConverter.ToString(sha256.Hash).Replace("-", "").ToLower();
+                }
+            }
         }
     }
 }

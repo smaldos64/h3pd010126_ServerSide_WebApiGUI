@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace GUIWebAPI.Models
+namespace GUIWebApi.Models
 {
     public class DBContext : DbContext
     {
@@ -9,14 +9,25 @@ namespace GUIWebAPI.Models
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Category1> Categories1 { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Product1> Products1 { get; set; }
         public DbSet<ImageFile> ImageFiles { get; set; }
+        public DbSet<FileInventory> FileInventories { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoryId);
+
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(300);
+            });
+
+            modelBuilder.Entity<Category1>(entity =>
+            {
+                entity.HasKey(e => e.Category1Id);
 
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(300);
             });
@@ -33,6 +44,22 @@ namespace GUIWebAPI.Models
 
                 entity.HasOne(e => e.ImageFile)
                 .WithMany(i => i.Products)
+                .HasForeignKey(e => e.ImageFileId)
+                .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<Product1>(entity =>
+            {
+                entity.HasKey(e => e.Product1Id);
+
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(450);
+
+                entity.Property(e => e.Price).HasPrecision(18, 2);
+
+                entity.HasOne(e => e.Category).WithMany(c => c.Products).HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.ImageFile)
+                .WithMany(i => i.Products1)
                 .HasForeignKey(e => e.ImageFileId)
                 .OnDelete(DeleteBehavior.SetNull);
             });

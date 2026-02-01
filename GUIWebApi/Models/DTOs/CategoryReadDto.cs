@@ -1,4 +1,4 @@
-﻿namespace GUIWebAPI.Models.DTOs
+﻿namespace GUIWebApi.Models.DTOs
 {
     public sealed class CategoryReadDto
     {

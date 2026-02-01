@@ -1,4 +1,4 @@
-﻿namespace GUIWebAPI.Models
+﻿namespace GUIWebApi.Models
 {
     public sealed class Category
     {

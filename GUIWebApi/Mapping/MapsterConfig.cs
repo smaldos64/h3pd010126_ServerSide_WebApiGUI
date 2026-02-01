@@ -1,5 +1,5 @@
-﻿using GUIWebAPI.Models;
-using GUIWebAPI.Models.DTOs;
+﻿using GUIWebApi.Models;
+using GUIWebApi.Models.DTOs;
 using Mapster;
 using System.Reflection;
 

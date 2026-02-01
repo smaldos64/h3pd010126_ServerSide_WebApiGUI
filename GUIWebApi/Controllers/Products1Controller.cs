@@ -1,19 +1,20 @@
 ﻿using GUIWebApi.Models;
 using GUIWebApi.Models.DTOs;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GUIWebAPI.Controllers
+namespace GUIWebApi.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    [ApiController]
+    public class Products1Controller : ControllerBase
     {
         private readonly DBContext db;
-        private readonly ILogger<ProductsController> logger;
+        private readonly ILogger<Products1Controller> logger;
 
-        public ProductsController(DBContext db, ILogger<ProductsController> logger)
+        public Products1Controller(DBContext db, ILogger<Products1Controller> logger)
         {
             this.db = db;
             this.logger = logger;
@@ -37,7 +38,7 @@ namespace GUIWebAPI.Controllers
                 pageSize = 20;
             }
 
-            IQueryable<Product> query = db.Products
+            IQueryable<Product1> query = db.Products1
                 .AsNoTracking()
                 .Include(p => p.Category);
 
@@ -58,7 +59,7 @@ namespace GUIWebAPI.Controllers
 
             List<ProductReadDto> result = await query
                 .OrderBy(p => p.Name)
-                .ThenBy(p => p.ProductId)
+                .ThenBy(p => p.Product1Id)
                 .Skip(skip)
                 .Take(pageSize)
                 .ProjectToType<ProductReadDto>()
@@ -227,3 +228,4 @@ namespace GUIWebAPI.Controllers
         }
     }
 }
+

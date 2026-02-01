@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GUIWebAPI.Models.DTOs
+namespace GUIWebApi.Models.DTOs
 {
     public sealed class ProductCreateDto
     {
