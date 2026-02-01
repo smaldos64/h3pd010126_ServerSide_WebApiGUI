@@ -31,10 +31,15 @@ namespace GUIWebApi.Controllers
 
             List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
 
-            //foreach (ImageFileReadDto dto in dtos)
-            //{
-            //    dto.Url = MakeAbsoluteUrl(dto.Url);
-            //}
+            return Ok(dtos);
+        }
+
+        [HttpGet("GetAllInventoryImages")]
+        public async Task<IActionResult> GetAllInventoryImages()
+        {
+            List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).AsNoTracking().ToListAsync();
+
+            List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
 
             return Ok(dtos);
         }
@@ -64,6 +69,8 @@ namespace GUIWebApi.Controllers
                 string imagesRoot = ImageTools.GetImagesRoot(env);
                 string finalPath = Path.Combine(imagesRoot, storageName);
 
+                string relative = PathTools.ImagePath + storageName;
+
                 using (var stream = new FileStream(finalPath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -73,7 +80,8 @@ namespace GUIWebApi.Controllers
                 {
                     ContentHash = fileHash,
                     PhysicalPath = imagesRoot,
-                    FileSize = file.Length
+                    FileSize = file.Length,
+                    RelativePath = relative
                 };
                 db.InventoryFiles.Add(inventory);
                 await db.SaveChangesAsync();

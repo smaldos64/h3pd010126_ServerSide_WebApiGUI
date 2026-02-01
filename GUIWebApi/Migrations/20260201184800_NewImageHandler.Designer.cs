@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GUIWebApi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260201145911_NewImageHandler")]
+    [Migration("20260201184800_NewImageHandler")]
     partial class NewImageHandler
     {
         /// <inheritdoc />
@@ -102,6 +102,9 @@ namespace GUIWebApi.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("PhysicalPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RelativePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InventoryFileId");

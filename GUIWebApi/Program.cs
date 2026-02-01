@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using GUIWebApi.Tools;
 
 namespace GUIWebAPI
 {
@@ -56,10 +57,11 @@ namespace GUIWebAPI
                 options.Limits.MaxRequestBodySize = 500_000_000;
             });
 
-            //builder.Services.AddControllers().AddJsonOptions(x =>
-            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
+
+            PathTools.Configure(app.Services.GetRequiredService<IHttpContextAccessor>());
 
             app.UseSwagger();
             app.UseSwaggerUI();

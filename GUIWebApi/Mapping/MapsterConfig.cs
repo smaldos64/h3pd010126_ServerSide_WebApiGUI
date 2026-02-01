@@ -33,7 +33,7 @@ namespace GUIWebAPI.Mapping
                 .Map(d => d.Name, s => s.Name);
 
             config.NewConfig<InventoryFile, InventoryFileReadDto>()
-                .Map(d => d.Url, s => s.ContentHash.MakeUrl());
+                .Map(d => d.Url, s => s.RelativePath.MakeUrl());
         }
 
         public static void RegisterGlobal()

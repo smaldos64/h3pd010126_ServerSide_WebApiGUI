@@ -101,6 +101,9 @@ namespace GUIWebApi.Migrations
                     b.Property<string>("PhysicalPath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RelativePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("InventoryFileId");
 
                     b.ToTable("InventoryFiles");

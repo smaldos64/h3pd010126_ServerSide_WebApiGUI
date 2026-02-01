@@ -136,7 +136,8 @@ namespace GUIWebAPI.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                string relative = "/images/" + finalName;
+                //string relative = "/images/" + finalName;
+                string relative = PathTools.ImagePath + finalName;
                 ImageFile? existing = await db.ImageFiles.FirstOrDefaultAsync(i => i.RelativePath == relative);
                 if (existing == null)
                 {

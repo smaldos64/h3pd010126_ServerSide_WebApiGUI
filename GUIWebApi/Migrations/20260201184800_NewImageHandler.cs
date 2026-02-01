@@ -59,6 +59,7 @@ namespace GUIWebApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContentHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhysicalPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RelativePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileSize = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>

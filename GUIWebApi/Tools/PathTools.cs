@@ -11,6 +11,8 @@ namespace GUIWebApi.Tools
 {
     public static class PathTools
     {
+        public static string ImagePath = "/images/";
+
         private static IHttpContextAccessor _accessor;
 
         public static void Configure(IHttpContextAccessor accessor)
