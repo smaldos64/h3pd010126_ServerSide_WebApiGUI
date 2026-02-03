@@ -44,7 +44,7 @@ namespace GUIWebApi.Controllers
 
             if (categoryId.HasValue && categoryId.Value > 0)
             {
-                query = query.Where(p => p.CategoryId == categoryId.Value);
+                query = query.Where(p => p.Category1Id == categoryId.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(q))

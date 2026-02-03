@@ -5,8 +5,7 @@
         public int UserFileId { get; set; }
         public string? DisplayName { get; set; }
         public DateTime UploadDate { get; set; }
-        public int FileInventoryId { get; set; }
-        //public string ?Inventory { get; set; }
+        public int InventoryFileId { get; set; }
     }
 
     public class  UserFileDto : UserFileReadDto

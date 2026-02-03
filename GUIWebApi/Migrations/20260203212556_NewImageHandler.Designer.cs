@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GUIWebApi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260201184800_NewImageHandler")]
+    [Migration("20260203212556_NewImageHandler")]
     partial class NewImageHandler
     {
         /// <inheritdoc />
@@ -155,7 +155,7 @@ namespace GUIWebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Product1Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Category1Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -175,7 +175,7 @@ namespace GUIWebApi.Migrations
 
                     b.HasKey("Product1Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("Category1Id");
 
                     b.HasIndex("ImageFileId");
 
@@ -228,7 +228,7 @@ namespace GUIWebApi.Migrations
                 {
                     b.HasOne("GUIWebApi.Models.Category1", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("Category1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

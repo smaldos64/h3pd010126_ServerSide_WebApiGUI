@@ -56,7 +56,7 @@ namespace GUIWebApi.Models
 
                 entity.Property(e => e.Price).HasPrecision(18, 2);
 
-                entity.HasOne(e => e.Category).WithMany(c => c.Products).HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Category).WithMany(c => c.Products).HasForeignKey(e => e.Category1Id).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.ImageFile)
                 .WithMany(i => i.Products1)

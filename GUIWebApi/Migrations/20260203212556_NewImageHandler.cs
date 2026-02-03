@@ -126,15 +126,15 @@ namespace GUIWebApi.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Category1Id = table.Column<int>(type: "int", nullable: false),
                     ImageFileId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products1", x => x.Product1Id);
                     table.ForeignKey(
-                        name: "FK_Products1_Categories1_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Products1_Categories1_Category1Id",
+                        column: x => x.Category1Id,
                         principalTable: "Categories1",
                         principalColumn: "Category1Id",
                         onDelete: ReferentialAction.Cascade);
@@ -163,9 +163,9 @@ namespace GUIWebApi.Migrations
                 column: "ImageFileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products1_CategoryId",
+                name: "IX_Products1_Category1Id",
                 table: "Products1",
-                column: "CategoryId");
+                column: "Category1Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products1_ImageFileId",

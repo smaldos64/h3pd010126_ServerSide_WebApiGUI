@@ -13,25 +13,49 @@ namespace GUIWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageFiles1Controller : ControllerBase
+    //public class ImageFiles1Controller : ControllerBase
+    public class ImageFiles1Controller : MyMapsterBaseController<ImageFiles1Controller, DBContext>
     {
         private readonly DBContext db;
         private readonly IWebHostEnvironment env;
 
-        public ImageFiles1Controller(DBContext db, IWebHostEnvironment env)
+        //public ImageFiles1Controller(DBContext db, IWebHostEnvironment env)
+        //{
+        //    this.db = db;
+        //    this.env = env;
+        //}
+
+        public ImageFiles1Controller(DBContext db, IWebHostEnvironment env, ILogger<ImageFiles1Controller> logger) : base(db, logger)
         {
             this.db = db;
             this.env = env;
         }
 
-        [HttpGet("GetAllUserImages")]
-        public async Task<IActionResult> GetAllUserImages()
+        [HttpGet("GetAllUserImages_1")]
+        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_1()
         {
             List<UserFile> items = await db.UserFiles.Include(i => i.Inventory).AsNoTracking().ToListAsync();
 
             List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
 
             return Ok(dtos);
+        }
+
+        [HttpGet("GetAllUserImages_2")]
+        public async Task<IActionResult> GetAllUserImages_2()
+        {
+            List<UserFile> items = await db.UserFiles.Include(i => i.Inventory).AsNoTracking().ToListAsync();
+
+            List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
+
+            return Ok(dtos);
+        }
+
+        [HttpGet("GetAllUserImages_3")]
+        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_3()
+        {
+            //return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
+            return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
         }
 
         [HttpGet("GetAllInventoryImages")]
