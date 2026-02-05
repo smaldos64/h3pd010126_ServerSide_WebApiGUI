@@ -32,7 +32,13 @@ namespace GUIWebAPI.Mapping
                 .Map(d => d.CategoryId, s => s.CategoryId)
                 .Map(d => d.Name, s => s.Name);
 
-            config.NewConfig<InventoryFile, InventoryFileReadDto>()
+            config.NewConfig<InventoryFile, InventoryFileCreateDto>()
+                .Map(d => d.Url, s => s.RelativePath.MakeUrl());
+
+            config.NewConfig<InventoryFile, InventoryFileUpdateDto>()
+                .Map(d => d.Url, s => s.RelativePath.MakeUrl());
+
+            config.NewConfig<InventoryFile, InventoryFileDto>()
                 .Map(d => d.Url, s => s.RelativePath.MakeUrl());
         }
 

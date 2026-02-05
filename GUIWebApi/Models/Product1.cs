@@ -11,7 +11,7 @@
         public int Category1Id { get; set; }
         public Category1 Category { get; set; }
 
-        public int? ImageFileId { get; set; }
-        public UserFile? ImageFile { get; set; }
+        public int? UserFileId { get; set; }
+        public UserFile? UserFile { get; set; }
     }
 }

@@ -56,11 +56,11 @@ namespace GUIWebApi.Models
 
                 entity.Property(e => e.Price).HasPrecision(18, 2);
 
-                entity.HasOne(e => e.Category).WithMany(c => c.Products).HasForeignKey(e => e.Category1Id).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Category).WithMany(c => c.Products1).HasForeignKey(e => e.Category1Id).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(e => e.ImageFile)
+                entity.HasOne(e => e.UserFile)
                 .WithMany(i => i.Products1)
-                .HasForeignKey(e => e.ImageFileId)
+                .HasForeignKey(e => e.UserFileId)
                 .OnDelete(DeleteBehavior.SetNull);
             });
 
@@ -72,6 +72,12 @@ namespace GUIWebApi.Models
 
                 entity.HasIndex(e => e.RelativePath).IsUnique();
             });
+
+            modelBuilder.Entity<Product1>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products1)
+                .HasForeignKey(p => p.Category1Id)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

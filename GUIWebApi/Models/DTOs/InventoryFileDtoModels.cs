@@ -1,8 +1,7 @@
 ﻿namespace GUIWebApi.Models.DTOs
 {
-    public class InventoryFileReadDto
+    public class InventoryFileCreateDto
     {
-        public int InventoryFileId { get; set; }
         public string? ContentHash { get; set; } // SHA256 af indholdet
         public string? PhysicalPath { get; set; } // Hvor den bor på serveren
         public string? RelativePath { get; set; } // Relative Path from wwwroot
@@ -10,8 +9,13 @@
         public string? Url { get; set; }
     }
 
-    public class InventoryFileDto : InventoryFileReadDto
+    public class InventoryFileUpdateDto : InventoryFileCreateDto
     {
-        public List<UserFileReadDto>? UserFiles { get; set; }
+        public int InventoryFileId { get; set; }// No additional fields for now
+    }   
+
+    public class InventoryFileDto : InventoryFileUpdateDto
+    {
+        public List<UserFileWithProductDto>? UserFiles { get; set; }
     }
 }

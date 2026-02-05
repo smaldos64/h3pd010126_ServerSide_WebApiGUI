@@ -23,7 +23,7 @@ namespace GUIWebApi.Controllers
             IQueryable<Category1> query = db.Categories1.AsNoTracking();
 
             if (includeProducts)
-                query = query.Include(c => c.Products);
+                query = query.Include(c => c.Products1);
 
             if (!string.IsNullOrWhiteSpace(q))
             {
@@ -48,7 +48,7 @@ namespace GUIWebApi.Controllers
             {
                 CategoryId = c.Category1Id,
                 Name = c.Name,
-                Products = c.Products.OrderBy(p => p.Name).ThenBy(p => p.Product1Id).Select(p => new ProductListItemDto
+                Products = c.Products1.OrderBy(p => p.Name).ThenBy(p => p.Product1Id).Select(p => new ProductListItemDto
                 {
                     ProductId = p.Product1Id,
                     Name = p.Name,
@@ -65,7 +65,7 @@ namespace GUIWebApi.Controllers
             IQueryable<Category1> query = db.Categories1.AsNoTracking();
             if (includeProducts)
             {
-                query = query.Include(c => c.Products);
+                query = query.Include(c => c.Products1);
             }
 
             Category1? category = await query.FirstOrDefaultAsync(c => c.Category1Id == id);
@@ -85,7 +85,7 @@ namespace GUIWebApi.Controllers
             {
                 CategoryId = category.Category1Id,
                 Name = category.Name,
-                Products = category.Products.OrderBy(p => p.Name).ThenBy(p => p.Product1Id).Select(p => new ProductListItemDto
+                Products = category.Products1.OrderBy(p => p.Name).ThenBy(p => p.Product1Id).Select(p => new ProductListItemDto
                 {
                     ProductId = p.Product1Id,
                     Name = p.Name,

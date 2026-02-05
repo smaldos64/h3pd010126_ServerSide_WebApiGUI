@@ -13,19 +13,19 @@ namespace GUIWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //public class ImageFiles1Controller : ControllerBase
-    public class ImageFiles1Controller : MyMapsterBaseController<ImageFiles1Controller, DBContext>
+    //public class UserFilesController : ControllerBase
+    public class UserFilesController : MyMapsterBaseController<UserFilesController, DBContext>
     {
         private readonly DBContext db;
         private readonly IWebHostEnvironment env;
 
-        //public ImageFiles1Controller(DBContext db, IWebHostEnvironment env)
+        //public UserFilesController(DBContext db, IWebHostEnvironment env)
         //{
         //    this.db = db;
         //    this.env = env;
         //}
 
-        public ImageFiles1Controller(DBContext db, IWebHostEnvironment env, ILogger<ImageFiles1Controller> logger) : base(db, logger)
+        public UserFilesController(DBContext db, IWebHostEnvironment env, ILogger<UserFilesController> logger) : base(db, logger)
         {
             this.db = db;
             this.env = env;
@@ -34,7 +34,7 @@ namespace GUIWebApi.Controllers
         [HttpGet("GetAllUserImages_1")]
         public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_1()
         {
-            List<UserFile> items = await db.UserFiles.Include(i => i.Inventory).AsNoTracking().ToListAsync();
+            List<UserFile> items = await db.UserFiles.Include(i => i.InventoryFile).AsNoTracking().ToListAsync();
 
             List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
 
@@ -44,7 +44,7 @@ namespace GUIWebApi.Controllers
         [HttpGet("GetAllUserImages_2")]
         public async Task<IActionResult> GetAllUserImages_2()
         {
-            List<UserFile> items = await db.UserFiles.Include(i => i.Inventory).AsNoTracking().ToListAsync();
+            List<UserFile> items = await db.UserFiles.Include(i => i.InventoryFile).AsNoTracking().ToListAsync();
 
             List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
 
@@ -54,18 +54,27 @@ namespace GUIWebApi.Controllers
         [HttpGet("GetAllUserImages_3")]
         public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_3()
         {
-            //return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
-            return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
+            return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
+            //return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
         }
 
         [HttpGet("GetAllInventoryImages")]
         public async Task<IActionResult> GetAllInventoryImages()
         {
-            List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).AsNoTracking().ToListAsync();
+            List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).
+                ThenInclude(p => p.Products1).
+                ThenInclude(c => c.Category).
+                AsNoTracking().ToListAsync();
 
             List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
 
             return Ok(dtos);
+        }
+
+        [HttpGet("GetAllInventoryImages_1")]
+        public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_1()
+        {
+            return (await ProjectListAsync<InventoryFile, InventoryFileDto>(_db.InventoryFiles, useTracking: false));
         }
 
         [HttpPost("smart-upload")]
@@ -123,8 +132,8 @@ namespace GUIWebApi.Controllers
 
             ViewModels.ImageFilesInfo result = new ViewModels.ImageFilesInfo
             {
-                FileInventory = inventory.Adapt<InventoryFileReadDto>(),
-                UserFile = userFile.Adapt<UserFileReadDto>()
+                FileInventory = inventory.Adapt<InventoryFileCreateDto>(),
+                UserFile = userFile.Adapt<UserFileCreateDto>()
             };
 
             return Ok(result);
@@ -135,13 +144,13 @@ namespace GUIWebApi.Controllers
         {
             // 1. Find brugerens fil-reference
             var userFile = await db.UserFiles
-                .Include(u => u.Inventory)
+                .Include(u => u.InventoryFile)
                 .FirstOrDefaultAsync(u => u.UserFileId == userFileId);
 
             if (userFile == null) return false;
 
             var inventoryId = userFile.InventoryFileId;
-            var inventoryRecord = userFile.Inventory;
+            var inventoryRecord = userFile.InventoryFile;
 
             // 2. Fjern brugerens reference fra DB
             db.UserFiles.Remove(userFile);

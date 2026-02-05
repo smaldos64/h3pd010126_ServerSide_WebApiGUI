@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GUIWebApi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260203212556_NewImageHandler")]
-    partial class NewImageHandler
+    [Migration("20260205221838_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,9 +161,6 @@ namespace GUIWebApi.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageFileId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(450)
@@ -173,11 +170,14 @@ namespace GUIWebApi.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("UserFileId")
+                        .HasColumnType("int");
+
                     b.HasKey("Product1Id");
 
                     b.HasIndex("Category1Id");
 
-                    b.HasIndex("ImageFileId");
+                    b.HasIndex("UserFileId");
 
                     b.ToTable("Products1");
                 });
@@ -227,30 +227,30 @@ namespace GUIWebApi.Migrations
             modelBuilder.Entity("GUIWebApi.Models.Product1", b =>
                 {
                     b.HasOne("GUIWebApi.Models.Category1", "Category")
-                        .WithMany("Products")
+                        .WithMany("Products1")
                         .HasForeignKey("Category1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GUIWebApi.Models.UserFile", "ImageFile")
+                    b.HasOne("GUIWebApi.Models.UserFile", "UserFile")
                         .WithMany("Products1")
-                        .HasForeignKey("ImageFileId")
+                        .HasForeignKey("UserFileId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Category");
 
-                    b.Navigation("ImageFile");
+                    b.Navigation("UserFile");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.UserFile", b =>
                 {
-                    b.HasOne("GUIWebApi.Models.InventoryFile", "Inventory")
+                    b.HasOne("GUIWebApi.Models.InventoryFile", "InventoryFile")
                         .WithMany("UserFiles")
                         .HasForeignKey("InventoryFileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Inventory");
+                    b.Navigation("InventoryFile");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.Category", b =>
@@ -260,7 +260,7 @@ namespace GUIWebApi.Migrations
 
             modelBuilder.Entity("GUIWebApi.Models.Category1", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Products1");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.ImageFile", b =>

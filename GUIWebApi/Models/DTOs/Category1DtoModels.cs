@@ -11,6 +11,6 @@
 
     public class Category1Dto : Category1UpdateDto
     {
-        public List<Product1UpdateDto>? Products { get; set; }
+        public List<Product1WithUserFileDto>? Products1 { get; set; }
     }
 }

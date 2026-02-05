@@ -4,7 +4,7 @@ namespace GUIWebApi.ViewModels
 {
     public class ImageFilesInfo
     {
-        public InventoryFileReadDto? FileInventory { get; set; }
-        public UserFileReadDto? UserFile { get; set; }
+        public InventoryFileCreateDto? FileInventory { get; set; }
+        public UserFileCreateDto? UserFile { get; set; }
     }
 }

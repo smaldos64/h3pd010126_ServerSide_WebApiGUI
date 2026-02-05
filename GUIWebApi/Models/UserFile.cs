@@ -6,7 +6,7 @@
         public string? DisplayName { get; set; } // "ferie.jpg"
         public DateTime UploadDate { get; set; }
         public int InventoryFileId { get; set; } // Relation til den fysiske fil
-        public InventoryFile? Inventory { get; set; }
+        public InventoryFile? InventoryFile { get; set; }
 
         public ICollection<Product1> Products1 { get; set; }
     }

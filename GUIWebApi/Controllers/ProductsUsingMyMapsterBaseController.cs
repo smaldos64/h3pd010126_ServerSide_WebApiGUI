@@ -24,7 +24,7 @@ namespace GUIWebApi.Controllers
             
         [HttpGet("GetAllInventoryImages/{categoryId}")]
         public async Task<ActionResult<IEnumerable<Product1Dto>>> GetAllByCategoryId(int categoryId)
-            => await GetFilteredAsync<Product1, Product1Dto>(p => p.Category1Id == categoryId, useTracking:false);
+            => await GetFilteredAsync<Product1, Product1Dto>(p => p.Category1Id == categoryId, useTracking: false);
 
         [HttpPost]
         public async Task<ActionResult<Product1UpdateDto>> Create(Product1CreateDto dto)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GUIWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class NewImageHandler : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -127,7 +127,7 @@ namespace GUIWebApi.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Category1Id = table.Column<int>(type: "int", nullable: false),
-                    ImageFileId = table.Column<int>(type: "int", nullable: true)
+                    UserFileId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,10 +137,10 @@ namespace GUIWebApi.Migrations
                         column: x => x.Category1Id,
                         principalTable: "Categories1",
                         principalColumn: "Category1Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products1_UserFiles_ImageFileId",
-                        column: x => x.ImageFileId,
+                        name: "FK_Products1_UserFiles_UserFileId",
+                        column: x => x.UserFileId,
                         principalTable: "UserFiles",
                         principalColumn: "UserFileId",
                         onDelete: ReferentialAction.SetNull);
@@ -168,9 +168,9 @@ namespace GUIWebApi.Migrations
                 column: "Category1Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products1_ImageFileId",
+                name: "IX_Products1_UserFileId",
                 table: "Products1",
-                column: "ImageFileId");
+                column: "UserFileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserFiles_InventoryFileId",
