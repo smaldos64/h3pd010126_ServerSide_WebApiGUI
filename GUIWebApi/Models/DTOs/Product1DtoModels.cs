@@ -27,6 +27,7 @@
     public class Product1Dto : Product1UpdateDto
     {
         public Category1UpdateDto? Category { get; set; }
-        public UserFileWithInventoryFileDto? UserFile { get; set; }
+        public UserFileDto? UserFile { get; set; }
+        //UserFileWithInventoryFileDto
     }
 }

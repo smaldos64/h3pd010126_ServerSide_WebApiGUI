@@ -7,9 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Categories1Controller.cs" />
+    <Compile Remove="Controllers\CategoriesController.cs" />
+    <Compile Remove="Controllers\ImageFilesController.cs" />
+    <Compile Remove="Controllers\Products1Controller.cs" />
+    <Compile Remove="Controllers\ProductsController.cs" />
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Models\Category.cs" />
+    <Compile Remove="Models\DTOs\CategoryReadDto.cs" />
+    <Compile Remove="Models\DTOs\CategoryWithProductsReadDto.cs" />
     <Compile Remove="Models\DTOs\FileInventoryReadDto.cs" />
+    <Compile Remove="Models\DTOs\ImageFileReadDto.cs" />
+    <Compile Remove="Models\DTOs\ProductCreateDto.cs" />
+    <Compile Remove="Models\DTOs\ProductListItemDto.cs" />
+    <Compile Remove="Models\DTOs\ProductReadDto.cs" />
     <Compile Remove="Models\DTOs\UserFileDto.cs" />
     <Compile Remove="Models\DTOs\UserFileReadDto.cs" />
+    <Compile Remove="Models\ImageFile.cs" />
+    <Compile Remove="Models\Product.cs" />
   </ItemGroup>
 
   <ItemGroup>

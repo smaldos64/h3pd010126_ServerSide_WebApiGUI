@@ -26,7 +26,7 @@
     public class UserFileDto : UserFileUpdateDto
     {
         public InventoryFileUpdateDto? InventoryFile { get; set; }
-
+        
         public List<Product1WithCategoryDto>? Products1 { get; set; }
     }
 }

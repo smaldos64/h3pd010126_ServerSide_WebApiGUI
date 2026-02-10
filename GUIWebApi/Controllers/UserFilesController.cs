@@ -31,51 +31,61 @@ namespace GUIWebApi.Controllers
             this.env = env;
         }
 
-        [HttpGet("GetAllUserImages_1")]
-        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_1()
+        [HttpGet("GetAllUserImages_ActionResult")]
+        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_ActionResult()
         {
-            List<UserFile> items = await db.UserFiles.Include(i => i.InventoryFile).AsNoTracking().ToListAsync();
-
-            List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
-
-            return Ok(dtos);
-        }
-
-        [HttpGet("GetAllUserImages_2")]
-        public async Task<IActionResult> GetAllUserImages_2()
-        {
-            List<UserFile> items = await db.UserFiles.Include(i => i.InventoryFile).AsNoTracking().ToListAsync();
-
-            List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
-
-            return Ok(dtos);
-        }
-
-        [HttpGet("GetAllUserImages_3")]
-        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_3()
-        {
-            return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
-            //return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: false));
-        }
-
-        [HttpGet("GetAllInventoryImages")]
-        public async Task<IActionResult> GetAllInventoryImages()
-        {
-            List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).
-                ThenInclude(p => p.Products1).
+            List<UserFile> items = await db.UserFiles.
+                Include(p => p.Products1).
                 ThenInclude(c => c.Category).
-                AsNoTracking().ToListAsync();
+                Include(i => i.InventoryFile).
+                AsNoTracking().
+                ToListAsync();
 
-            List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
+            List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
 
             return Ok(dtos);
         }
 
-        [HttpGet("GetAllInventoryImages_1")]
-        public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_1()
+        [HttpGet("GetAllUserImages_IActionResult")]
+        public async Task<IActionResult> GetAllUserImages_IActionResult()
         {
-            return (await ProjectListAsync<InventoryFile, InventoryFileDto>(_db.InventoryFiles, useTracking: false));
+            List<UserFile> items = await db.UserFiles.
+                Include(i => i.InventoryFile).
+                Include(p => p.Products1).
+                ThenInclude(c => c.Category).
+                AsNoTracking().
+                ToListAsync();
+
+            List<UserFileDto> dtos = items.Adapt<List<UserFileDto>>();
+
+            return Ok(dtos);
         }
+
+        [HttpGet("GetAllUserImages_Generic")]
+        public async Task<ActionResult<IEnumerable<UserFileDto>>> GetAllUserImages_Generic()
+        {
+            return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: true));
+            //return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: flase));
+        }
+
+        //[HttpGet("GetAllInventoryImages")]
+        //public async Task<IActionResult> GetAllInventoryImages()
+        //{
+        //    List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).
+        //        ThenInclude(p => p.Products1).
+        //        ThenInclude(c => c.Category).
+        //        AsNoTracking().ToListAsync();
+
+        //    List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
+
+        //    return Ok(dtos);
+        //}
+
+        //[HttpGet("GetAllInventoryImages_1")]
+        //public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_1()
+        //{
+        //    return (await ProjectListAsync<InventoryFile, InventoryFileDto>(_db.InventoryFiles, useTracking: false));
+        //}
 
         [HttpPost("smart-upload")]
         public async Task<IActionResult> ProcessSmartUpload(IFormFile file)
