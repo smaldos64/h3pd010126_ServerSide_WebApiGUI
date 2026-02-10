@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GUIWebApi.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260205221838_Init")]
+    [Migration("20260210123910_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,24 +24,6 @@ namespace GUIWebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GUIWebApi.Models.Category", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
 
             modelBuilder.Entity("GUIWebApi.Models.Category1", b =>
                 {
@@ -59,32 +41,6 @@ namespace GUIWebApi.Migrations
                     b.HasKey("Category1Id");
 
                     b.ToTable("Categories1");
-                });
-
-            modelBuilder.Entity("GUIWebApi.Models.ImageFile", b =>
-                {
-                    b.Property<int>("ImageFileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageFileId"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("RelativePath")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.HasKey("ImageFileId");
-
-                    b.HasIndex("RelativePath")
-                        .IsUnique();
-
-                    b.ToTable("ImageFiles");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.InventoryFile", b =>
@@ -110,41 +66,6 @@ namespace GUIWebApi.Migrations
                     b.HasKey("InventoryFileId");
 
                     b.ToTable("InventoryFiles");
-                });
-
-            modelBuilder.Entity("GUIWebApi.Models.Product", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ImageFileId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ProductId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("ImageFileId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.Product1", b =>
@@ -206,27 +127,9 @@ namespace GUIWebApi.Migrations
                     b.ToTable("UserFiles");
                 });
 
-            modelBuilder.Entity("GUIWebApi.Models.Product", b =>
-                {
-                    b.HasOne("GUIWebApi.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GUIWebApi.Models.ImageFile", "ImageFile")
-                        .WithMany("Products")
-                        .HasForeignKey("ImageFileId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Category");
-
-                    b.Navigation("ImageFile");
-                });
-
             modelBuilder.Entity("GUIWebApi.Models.Product1", b =>
                 {
-                    b.HasOne("GUIWebApi.Models.Category1", "Category")
+                    b.HasOne("GUIWebApi.Models.Category1", "Category1")
                         .WithMany("Products1")
                         .HasForeignKey("Category1Id")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -237,7 +140,7 @@ namespace GUIWebApi.Migrations
                         .HasForeignKey("UserFileId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Category");
+                    b.Navigation("Category1");
 
                     b.Navigation("UserFile");
                 });
@@ -253,19 +156,9 @@ namespace GUIWebApi.Migrations
                     b.Navigation("InventoryFile");
                 });
 
-            modelBuilder.Entity("GUIWebApi.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("GUIWebApi.Models.Category1", b =>
                 {
                     b.Navigation("Products1");
-                });
-
-            modelBuilder.Entity("GUIWebApi.Models.ImageFile", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("GUIWebApi.Models.InventoryFile", b =>

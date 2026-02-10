@@ -16,7 +16,7 @@
 
     public class Product1WithCategoryDto : Product1UpdateDto
     {
-        public Category1UpdateDto? Category { get; set; }
+        public Category1UpdateDto? Category1 { get; set; }
     }
 
     public class Product1WithUserFileDto : Product1UpdateDto
@@ -26,8 +26,7 @@
 
     public class Product1Dto : Product1UpdateDto
     {
-        public Category1UpdateDto? Category { get; set; }
-        public UserFileDto? UserFile { get; set; }
-        //UserFileWithInventoryFileDto
+        public Category1UpdateDto? Category1 { get; set; }
+        public UserFileWithInventoryFileDto? UserFile { get; set; }
     }
 }

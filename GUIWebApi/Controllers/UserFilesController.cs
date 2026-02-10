@@ -36,7 +36,7 @@ namespace GUIWebApi.Controllers
         {
             List<UserFile> items = await db.UserFiles.
                 Include(p => p.Products1).
-                ThenInclude(c => c.Category).
+                ThenInclude(c => c.Category1).
                 Include(i => i.InventoryFile).
                 AsNoTracking().
                 ToListAsync();
@@ -52,7 +52,7 @@ namespace GUIWebApi.Controllers
             List<UserFile> items = await db.UserFiles.
                 Include(i => i.InventoryFile).
                 Include(p => p.Products1).
-                ThenInclude(c => c.Category).
+                ThenInclude(c => c.Category1).
                 AsNoTracking().
                 ToListAsync();
 
@@ -67,25 +67,6 @@ namespace GUIWebApi.Controllers
             return (await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: true));
             //return Ok(await ProjectListAsync<UserFile, UserFileDto>(_db.UserFiles, useTracking: flase));
         }
-
-        //[HttpGet("GetAllInventoryImages")]
-        //public async Task<IActionResult> GetAllInventoryImages()
-        //{
-        //    List<InventoryFile> items = await db.InventoryFiles.Include(u => u.UserFiles).
-        //        ThenInclude(p => p.Products1).
-        //        ThenInclude(c => c.Category).
-        //        AsNoTracking().ToListAsync();
-
-        //    List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
-
-        //    return Ok(dtos);
-        //}
-
-        //[HttpGet("GetAllInventoryImages_1")]
-        //public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_1()
-        //{
-        //    return (await ProjectListAsync<InventoryFile, InventoryFileDto>(_db.InventoryFiles, useTracking: false));
-        //}
 
         [HttpPost("smart-upload")]
         public async Task<IActionResult> ProcessSmartUpload(IFormFile file)

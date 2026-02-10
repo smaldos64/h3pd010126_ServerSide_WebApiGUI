@@ -24,7 +24,7 @@ namespace GUIWebApi.Controllers
             List<InventoryFile> items = await db.InventoryFiles.
                 Include(u => u.UserFiles).
                 ThenInclude(p => p.Products1).
-                ThenInclude(c => c.Category).
+                ThenInclude(c => c.Category1).
                 AsNoTracking().ToListAsync();
 
             List<InventoryFileDto> dtos = items.Adapt<List<InventoryFileDto>>();
@@ -32,8 +32,8 @@ namespace GUIWebApi.Controllers
             return Ok(dtos);
         }
 
-        [HttpGet("GetAllInventoryImages_1")]
-        public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_1()
+        [HttpGet("GetAllInventoryImages_Generic")]
+        public async Task<ActionResult<IEnumerable<InventoryFileDto>>> GetAllInventoryImages_Generic()
         {
             return (await ProjectListAsync<InventoryFile, InventoryFileDto>(_db.InventoryFiles, useTracking: false));
         }

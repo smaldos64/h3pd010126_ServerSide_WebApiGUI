@@ -9,7 +9,7 @@
         public string? Description { get; set; }
 
         public int Category1Id { get; set; }
-        public Category1 Category { get; set; }
+        public Category1 Category1 { get; set; }
 
         public int? UserFileId { get; set; }
         public UserFile? UserFile { get; set; }
